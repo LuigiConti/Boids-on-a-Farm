@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Boid.gd" type="Script" id=1]
+
+[sub_resource type="CylinderMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0, 0.156863, 1, 1 )
+
+[sub_resource type="PrismMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="SphereShape" id=5]
+radius = 0.391675
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends CollisionShape
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
+
+[node name="KinematicBody" type="KinematicBody" groups=[
+"Boid",
+]]
+script = ExtResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.141438, 0, 0, 0, -5.88188e-08, 0.141438, 0, -0.361027, -2.30432e-08, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="MeshInstance" type="MeshInstance" parent="MeshInstance"]
+transform = Transform( 3.06913, 0, 0, 0, 0.501826, 0, 0, -2.84217e-14, 1.24041, 0, 1.27816, 0 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.046393, 0 )
+shape = SubResource( 5 )
+script = SubResource( 6 )
+
+[node name="EatTimer" type="Timer" parent="."]
+wait_time = 15.0
+
+[node name="EatCooldown" type="Timer" parent="."]
+wait_time = 14.0
+
+[node name="FlyTowardsTimer" type="Timer" parent="."]
+wait_time = 7.0
+
+[node name="ScaredTimer" type="Timer" parent="."]
+wait_time = 3.0
+[connection signal="timeout" from="EatTimer" to="." method="_on_EatTimer_timeout"]
+[connection signal="timeout" from="EatCooldown" to="." method="_on_EatCooldown_timeout"]
+[connection signal="timeout" from="FlyTowardsTimer" to="." method="_on_FlyTowardsTimer_timeout"]
+[connection signal="timeout" from="ScaredTimer" to="." method="_on_ScaredTimer_timeout"]

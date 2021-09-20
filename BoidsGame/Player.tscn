@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://polycat.dae" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.244868
+height = 0.811531
+
+[sub_resource type="ProceduralSky" id=2]
+sky_horizon_color = Color( 1, 0.886275, 0.592157, 1 )
+sky_curve = 0.214057
+ground_bottom_color = Color( 0.196078, 0.690196, 0.956863, 1 )
+ground_horizon_color = Color( 1, 0.858824, 0.372549, 1 )
+ground_curve = 0.0627668
+sun_color = Color( 1, 0.890196, 0.556863, 1 )
+sun_latitude = 9.98
+sun_longitude = 180.0
+sun_energy = 1.8
+
+[sub_resource type="Environment" id=3]
+background_mode = 2
+background_sky = SubResource( 2 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="SphereShape" id=4]
+radius = 10.6054
+
+[node name="Player" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.682493, 0 )
+shape = SubResource( 1 )
+
+[node name="CameraBase" type="Spatial" parent="."]
+
+[node name="Camera" type="Camera" parent="CameraBase"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.89015, 3.17842 )
+environment = SubResource( 3 )
+current = true
+far = 400.0
+
+[node name="Graphics" parent="." instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+
+[node name="ScareArea" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="ScareArea"]
+shape = SubResource( 4 )
+[connection signal="body_entered" from="ScareArea" to="." method="_on_ScareArea_body_entered"]
